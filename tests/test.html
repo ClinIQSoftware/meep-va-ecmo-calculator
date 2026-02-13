@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>MEEP Calculator — Test Suite</title>
+    <style>
+        body { font-family: 'SF Mono', 'Consolas', monospace; padding: 20px; background: #1a1a2e; color: #e0e0e0; }
+        h1 { color: #64b5f6; }
+        .pass { color: #66bb6a; }
+        .fail { color: #ef5350; font-weight: bold; }
+        #results { white-space: pre-wrap; line-height: 1.6; }
+    </style>
+</head>
+<body>
+    <h1>MEEP Calculator — Test Suite</h1>
+    <div id="results"></div>
+    <script src="../js/dash-model.js"></script>
+    <script src="../js/calculations.js"></script>
+    <script>
+    const results = document.getElementById('results');
+    let passed = 0, failed = 0;
+
+    function assert(name, actual, expected, tolerance) {
+        if (tolerance === undefined) tolerance = 1e-6;
+        let ok;
+        if (typeof expected === 'boolean') {
+            ok = actual === expected;
+        } else {
+            const relErr = Math.abs(expected) > 1e-15
+                ? Math.abs((actual - expected) / expected)
+                : Math.abs(actual - expected);
+            ok = relErr <= tolerance;
+        }
+        if (ok) {
+            results.innerHTML += '<span class="pass">PASS</span> ' + name + ': ' + actual + '\n';
+            passed++;
+        } else {
+            results.innerHTML += '<span class="fail">FAIL</span> ' + name + ': got ' + actual + ', expected ' + expected + '\n';
+            failed++;
+        }
+    }
+
+    function summary() {
+        const color = failed === 0 ? 'pass' : 'fail';
+        results.innerHTML += '\n---\n<span class="' + color + '">Total: ' + (passed + failed) + ' | Passed: ' + passed + ' | Failed: ' + failed + '</span>\n';
+    }
+    </script>
+    <script src="test-dash-model.js"></script>
+    <script src="test-calculations.js"></script>
+    <script src="test-bachmann.js"></script>
+</body>
+</html>
