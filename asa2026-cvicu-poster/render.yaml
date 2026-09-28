@@ -1,0 +1,13 @@
+services:
+  - type: web
+    runtime: static
+    name: asa2026-cvicu-poster
+    rootDir: asa2026-cvicu-poster
+    staticPublishPath: ./public
+    headers:
+      - path: /*
+        name: X-Robots-Tag
+        value: noindex, nofollow
+      - path: /*
+        name: Cache-Control
+        value: public, max-age=300

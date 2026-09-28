@@ -1,0 +1,438 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow,noarchive"><title>CVICU Pathway ePoster</title>
+<style>
+:root{
+  --bg:#EEF3F9; --stage:#DCE4EE; --surface:#FFFFFF; --surface-2:#F2F6FB; --line:#D9E2EC;
+  --ink:#0E2238; --muted:#56606B; --faint:#7E8893;
+  --blue:#0468CD; --deep:#00437E; --band:#0468CD; --band-soft:#CFE2F8;
+  --post:#0B7A4B; --post-soft:#E3F3EB; --trend:#9AA6B2; --aim:#1A2B3F; --gap:#E3EAF2;
+  --scrim:rgba(8,24,44,.55); --shadow:0 1px 2px rgba(14,34,56,.06),0 10px 28px rgba(14,34,56,.08);
+  --display:Arial,Helvetica,sans-serif;
+  --body:Arial,Helvetica,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;
+  --bg:#08131F; --stage:#040A12; --surface:#10202F; --surface-2:#152a40; --line:#23384E;
+  --ink:#E6EEF7; --muted:#A8B6C5; --faint:#8494A5;
+  --blue:#5AA9FF; --deep:#9CCBFF; --band:#0352A3; --band-soft:#BFD8F5;
+  --post:#43C98C; --post-soft:#123527; --trend:#6F7F90; --aim:#DCE6F0; --gap:#172a3d;
+  --scrim:rgba(0,0,0,.62); --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#08131F; --stage:#040A12; --surface:#10202F; --surface-2:#152a40; --line:#23384E;
+  --ink:#E6EEF7; --muted:#A8B6C5; --faint:#8494A5;
+  --blue:#5AA9FF; --deep:#9CCBFF; --band:#0352A3; --band-soft:#BFD8F5;
+  --post:#43C98C; --post-soft:#123527; --trend:#6F7F90; --aim:#DCE6F0; --gap:#172a3d;
+  --scrim:rgba(0,0,0,.62); --shadow:0 1px 2px rgba(0,0,0,.3),0 10px 28px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--stage);color:var(--ink);font-family:var(--body);margin:0;overflow:hidden;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--blue);outline-offset:2px;border-radius:6px}
+
+/* One 16:9 slide, scaled to fit any screen */
+.viewport{position:fixed;inset:0;display:grid;place-items:center;overflow:hidden}
+.slide{position:absolute;left:50%;top:50%;width:1920px;height:1080px;background:var(--bg);transform-origin:center center;transform:translate(-50%,-50%) scale(var(--s,.5));display:flex;flex-direction:column;overflow:hidden;box-shadow:0 0 0 1px var(--line)}
+
+/* Header */
+.band{height:150px;flex:none;background:var(--band);color:#fff;padding:0 48px;display:flex;align-items:center;gap:32px}
+.band h1{font-family:var(--display);font-weight:700;font-size:60px;line-height:1;margin:0}
+.band .sub{margin:8px 0 0;color:var(--band-soft);font-size:23px}
+.band .meta{display:flex;flex-direction:column;align-items:flex-end;gap:12px;margin-left:auto}
+.band .logo{height:56px;width:auto}
+.band .row{display:flex;gap:10px;align-items:center}
+.tag{font-size:17px;letter-spacing:1px;text-transform:uppercase;color:var(--band-soft);margin-right:6px}
+.pill-btn{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:999px;padding:6px 16px;font-size:17px;font-weight:600;cursor:pointer}
+.pill-btn:hover{background:rgba(255,255,255,.28)}
+
+/* Body grid */
+.body{flex:1;min-height:0;display:grid;grid-template-columns:360px minmax(0,1fr) 360px;gap:24px;padding:22px 28px 14px}
+.rail{display:flex;flex-direction:column;gap:12px;min-height:0}
+.rail-h{font-size:16px;letter-spacing:1.6px;text-transform:uppercase;color:var(--faint);font-weight:700;margin:0 4px}
+.tiles{flex:1;display:flex;flex-direction:column;gap:12px;min-height:0}
+.tile{flex:1;min-height:0;display:flex;gap:16px;align-items:center;text-align:left;width:100%;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;cursor:pointer;transition:transform .15s,border-color .15s,box-shadow .15s}
+.tile:hover{transform:translateY(-2px);border-color:var(--blue);box-shadow:var(--shadow)}
+.tile .ic{flex:none;width:48px;height:48px;border-radius:12px;background:var(--surface-2);color:var(--blue);display:grid;place-items:center;align-self:flex-start}
+.tile .ic svg{width:26px;height:26px}
+.tile .tt{display:block;font-weight:700;color:var(--deep);font-size:21px;line-height:1.15}
+.tile .tv{display:block;font-family:var(--display);font-weight:700;font-size:40px;line-height:1.05;color:var(--ink);margin-top:4px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.tile .tn{display:block;font-size:17px;color:var(--muted);line-height:1.25;margin-top:3px}
+.tile .chev{margin-left:auto;flex:none;color:var(--faint)}
+.tile:hover .chev{color:var(--blue)}
+
+.center{display:flex;flex-direction:column;gap:14px;min-width:0;min-height:0}
+.hero{flex:none;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:18px 24px;box-shadow:var(--shadow);cursor:pointer;text-align:left;width:100%;display:grid;grid-template-columns:auto 390px;gap:24px;align-items:center;transition:border-color .15s}
+.hero:hover{border-color:var(--blue)}
+.eyebrow{font-size:16px;letter-spacing:1.6px;text-transform:uppercase;color:var(--blue);font-weight:700}
+.big{font-family:var(--display);font-weight:700;font-size:108px;line-height:.95;color:var(--deep);font-variant-numeric:tabular-nums;display:flex;align-items:center;gap:18px;white-space:nowrap;margin-top:4px}
+.big .from{color:var(--muted);font-weight:600}
+.big .arrow{color:var(--blue);font-size:60px}
+.big .to{color:var(--post)}
+.cap{color:var(--muted);font-size:18px;margin-top:6px}
+.kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi{background:var(--surface-2);border-radius:12px;padding:10px 14px}
+.kpi b{display:block;white-space:nowrap;font-family:var(--display);font-size:36px;line-height:1;color:var(--ink);font-variant-numeric:tabular-nums}
+.kpi span{font-size:16px;color:var(--muted);line-height:1.2;display:block;margin-top:4px}
+.kpi.win b{color:var(--post)}
+
+.chartcard{flex:1;min-height:0;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:14px 20px 8px;box-shadow:var(--shadow);display:flex;flex-direction:column}
+.chart-top{display:flex;align-items:center;gap:16px;margin-bottom:4px}
+.chart-top h2{font-family:var(--display);font-size:28px;font-weight:700;color:var(--deep);margin:0;white-space:nowrap}
+.legend{display:flex;gap:6px;margin-left:auto}
+.lg{display:flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:4px 11px;font-size:15px;cursor:pointer;color:var(--ink);white-space:nowrap}
+.lg i{width:18px;height:4px;border-radius:2px;display:block}
+.lg[aria-pressed="false"]{opacity:.42}
+.lg[aria-pressed="false"] i{background:var(--faint)!important}
+#chart{position:relative;flex:1;min-height:0}
+#chart svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.tip{position:absolute;z-index:2;pointer-events:none;background:var(--ink);color:var(--bg);border-radius:10px;padding:8px 12px;font-size:16px;line-height:1.3;white-space:nowrap;transform:translate(-50%,-110%);opacity:0;transition:opacity .12s}
+.tip b{font-family:var(--display);font-size:22px}
+
+.pw{flex:none;display:flex;align-items:stretch;gap:0}
+.pw-h{flex:none;display:flex;flex-direction:column;justify-content:center;padding-right:16px}
+.pw-h b{font-family:var(--display);font-size:26px;color:var(--deep);line-height:1}
+.pw-h span{font-size:15px;color:var(--faint)}
+.steps{flex:1;display:grid;grid-template-columns:repeat(4,minmax(0,1fr))}
+.step{display:flex;align-items:center;gap:12px;background:var(--surface);border:1px solid var(--line);padding:12px 14px;cursor:pointer;text-align:left;transition:background .15s,border-color .15s;min-width:0;position:relative}
+.step+.step{border-left:none}
+.step:first-child{border-radius:14px 0 0 14px}
+.step:last-child{border-radius:0 14px 14px 0}
+.step:hover{background:var(--surface-2);border-color:var(--blue)}
+.step .n{flex:none;width:36px;height:36px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-weight:700;font-family:var(--display);font-size:21px}
+.step .s{display:block;font-weight:700;font-size:18px;line-height:1.15;color:var(--ink)}
+.step .k{display:block;font-size:15px;color:var(--muted);line-height:1.2}
+
+.foot{flex:none;height:40px;display:flex;align-items:center;gap:16px;padding:0 28px 10px;font-size:15px;color:var(--faint)}
+.foot button{background:none;border:none;color:var(--blue);cursor:pointer;padding:0;font-weight:700;font-size:15px}
+.foot .sp{flex:1}
+
+/* Dialog, inside the slide */
+.scrim{position:absolute;inset:0;background:var(--scrim);display:grid;place-items:center;z-index:50;opacity:0;pointer-events:none;transition:opacity .2s}
+.scrim.open{opacity:1;pointer-events:auto}
+.dlg{background:var(--surface);color:var(--ink);border-radius:24px;width:1320px;max-height:900px;overflow:auto;box-shadow:0 30px 80px rgba(0,0,0,.35);transform:translateY(16px) scale(.985);transition:transform .22s}
+.scrim.open .dlg{transform:none}
+.dlg-h{display:flex;align-items:center;gap:18px;padding:30px 36px 0}
+.dlg-h .ic{width:60px;height:60px;border-radius:14px;background:var(--surface-2);color:var(--blue);display:grid;place-items:center;flex:none}
+.dlg-h .ic svg{width:32px;height:32px}
+.dlg-h .grp{font-size:16px;letter-spacing:1.6px;text-transform:uppercase;color:var(--faint);font-weight:700}
+.dlg-h h3{margin:0;font-family:var(--display);font-size:48px;line-height:1.05;color:var(--deep)}
+.x{margin-left:auto;background:var(--surface-2);border:none;width:56px;height:56px;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:var(--muted);flex:none}
+.x svg{width:24px;height:24px}
+.x:hover{color:var(--ink)}
+.dlg-b{padding:24px 36px 8px;display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:36px;align-items:center}
+.dlg-b p{margin:0 0 14px;font-size:25px;line-height:1.5}
+.dlg-b.one{grid-template-columns:1fr}
+.viz{background:var(--surface-2);border-radius:18px;padding:28px;min-height:220px;display:flex;flex-direction:column;justify-content:center;gap:16px}
+.dlg-f{display:flex;align-items:center;gap:12px;padding:16px 36px 24px;border-top:1px solid var(--line);margin-top:16px}
+.nav{background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:10px 20px;cursor:pointer;font-weight:600;font-size:19px;max-width:40%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.nav:hover{border-color:var(--blue);color:var(--blue)}
+.nav.nx{margin-left:auto}
+.dots{display:flex;gap:7px;margin:0 auto}
+.dots i{width:9px;height:9px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--blue)}
+
+.vnum{font-family:var(--display);font-weight:700;font-size:84px;line-height:1;color:var(--deep);font-variant-numeric:tabular-nums}
+.vnum small{font-size:.42em;color:var(--muted);font-weight:600;margin-left:4px}
+.vlab{font-size:19px;color:var(--muted);line-height:1.3}
+.pairs{display:flex;flex-direction:column;gap:20px}
+.pair .pl{font-size:20px;font-weight:600;margin-bottom:8px;display:flex;justify-content:space-between;gap:10px}
+.pair .pl em{font-style:normal;color:var(--post);font-family:var(--display);font-size:26px}
+.hb{height:36px;border-radius:7px;background:var(--gap);position:relative;margin-bottom:6px;overflow:hidden}
+.hb span{position:absolute;left:0;top:0;bottom:0;border-radius:7px;display:flex;align-items:center;justify-content:flex-end;padding-right:10px;font-size:18px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;width:0;transition:width .7s cubic-bezier(.2,.8,.2,1)}
+.hb .pre{background:var(--trend)}
+.hb .post{background:var(--post)}
+.hb .blu{background:var(--blue)}
+.people{display:grid;grid-template-columns:repeat(3,64px);gap:16px;justify-content:center}
+.people svg{width:64px;height:64px}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chip{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:8px 16px;font-size:19px;font-weight:600}
+.funnel{display:flex;flex-direction:column;gap:10px}
+.fr{display:flex;align-items:center;gap:12px}
+.fr .fb{height:50px;border-radius:8px;background:var(--blue);color:#fff;display:flex;align-items:center;padding:0 14px;font-family:var(--display);font-size:30px;font-weight:700;white-space:nowrap;font-variant-numeric:tabular-nums}
+.fr .fb.out{background:var(--trend)}
+.fr .fl{font-size:19px;color:var(--muted);line-height:1.25}
+.authors{font-size:23px;line-height:1.7}
+.authors sup{color:var(--blue);font-weight:700}
+.affil{display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:21px}
+.affil b{color:var(--blue)}
+.tl{display:flex;flex-direction:column;gap:14px}
+.tl div{display:flex;gap:14px;align-items:baseline;font-size:22px}
+.tl b{font-family:var(--display);font-size:32px;color:var(--deep);min-width:110px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+</head><body><div class="viewport">
+<div class="slide" id="slide">
+  <header class="band">
+    <div>
+      <h1>Cleveland Clinic CVICU Pathway</h1>
+      <p class="sub">A lean-design recovery pathway for adult cardiac surgery, from the operating room to stepdown</p>
+    </div>
+    <div class="meta">
+      <img class="logo" alt="Cleveland Clinic" src="data:image/png;base64,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">
+      <div class="row">
+        <span class="tag">ASA 2026 · QI02 · Q118</span>
+        <button class="pill-btn" data-open="authors">Authors</button>
+        <button class="pill-btn" id="fs">Full screen</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="body">
+    <aside class="rail" aria-label="Background">
+      <div class="rail-h">Background</div>
+      <div class="tiles" id="railL"></div>
+    </aside>
+
+    <section class="center">
+      <button class="hero" data-open="outcome" aria-label="Open outcome measure details">
+        <div>
+          <div class="eyebrow">Outcome measure · extubated within 4 h of OR exit</div>
+          <div class="big"><span class="from">33.5%</span><span class="arrow">→</span><span class="to">46.4%</span></div>
+          <div class="cap">Baseline, Jan 2024 to Feb 2026 &nbsp;→&nbsp; after launch, Apr to Aug 2026</div>
+        </div>
+        <div class="kpis">
+          <div class="kpi"><b>+12.9 pts</b><span>absolute gain</span></div>
+          <div class="kpi"><b>+7.3 pts</b><span>above the pre-launch trend</span></div>
+          <div class="kpi win"><b>51.8%</b><span>July, month 5: aim met</span></div>
+          <div class="kpi"><b>p &lt; 0.001</b><span>baseline vs after launch</span></div>
+        </div>
+      </button>
+
+      <div class="chartcard">
+        <div class="chart-top">
+          <h2>Extubation within 4 h of OR exit, 32 consecutive months</h2>
+          <div class="legend" id="legend"></div>
+        </div>
+        <div id="chart"><div class="tip" id="tip"></div></div>
+      </div>
+
+      <div class="pw">
+        <div class="pw-h"><b>The pathway</b><span>tap a stage</span></div>
+        <div class="steps" id="steps"></div>
+      </div>
+    </section>
+
+    <aside class="rail" aria-label="Results and next steps">
+      <div class="rail-h">Results &amp; next steps</div>
+      <div class="tiles" id="railR"></div>
+    </aside>
+  </div>
+
+  <div class="foot">
+    <span>Tap any panel for details. Time measured from OR exit to airway removal; March 2026 (launch month) excluded from both periods.</span>
+    <span class="sp"></span>
+    <button data-open="methods">Methods &amp; statistics</button>
+  </div>
+
+  <div class="scrim" id="scrim" aria-hidden="true">
+    <div class="dlg" role="dialog" aria-modal="true" aria-labelledby="dlgTitle" id="dlg">
+      <div class="dlg-h">
+        <div class="ic" id="dlgIc"></div>
+        <div><div class="grp" id="dlgGrp"></div><h3 id="dlgTitle"></h3></div>
+        <button class="x" id="close" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </div>
+      <div class="dlg-b" id="dlgBody"></div>
+      <div class="dlg-f">
+        <button class="nav" id="prev"></button>
+        <div class="dots" id="dots"></div>
+        <button class="nav nx" id="next"></button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<script>
+(function(){
+const I = {
+  alert:'<path d="M12 3l10 18H2z"/><path d="M12 10v5M12 18v.5"/>',
+  target:'<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/>',
+  team:'<circle cx="9" cy="8" r="3.2"/><path d="M3 20c0-3.5 2.7-6 6-6s6 2.5 6 6"/><circle cx="17" cy="9" r="2.5"/><path d="M16 14c3 0 5 2 5 5"/>',
+  filter:'<path d="M3 4h18l-7 9v6l-4 2v-8z"/>',
+  flask:'<path d="M9 3h6M10 3v6L4 19a1.5 1.5 0 0 0 1.3 2h13.4A1.5 1.5 0 0 0 20 19l-6-10V3"/><path d="M7 15h10"/>',
+  shield:'<path d="M12 3l8 3v6c0 4.5-3.4 8-8 9-4.6-1-8-4.5-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/>',
+  moon:'<path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/>',
+  check:'<circle cx="12" cy="12" r="9"/><path d="M8 12.5l2.8 2.8L16.5 9.5"/>',
+  chart:'<path d="M4 20V4M4 20h16"/><path d="M7 15l4-4 3 3 5-6"/>',
+  doc:'<path d="M6 3h8l4 4v14H6z"/><path d="M14 3v4h4M9 12h6M9 16h6"/>',
+  users:'<circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.9 3.1-7 7-7s7 3.1 7 7"/>',
+  clip:'<rect x="6" y="4" width="12" height="17" rx="2"/><path d="M9 4h6v3H9zM9 12h6M9 16h4"/>',
+  scalpel:'<path d="M4 20l9-9M13 11l6-7 1 1-5 8z"/>',
+  bed:'<path d="M3 18V8M3 14h18v4M21 14v-2a3 3 0 0 0-3-3h-7v5"/><circle cx="7" cy="11" r="1.8"/>',
+  walk:'<circle cx="13" cy="4.5" r="1.8"/><path d="M11 21l2-6-3-3 1-5 4 3 3 1M8 13l-2 3"/>'
+};
+const ico = n => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">${I[n]}</svg>`;
+const bars = rows => `<div class="pairs">${rows.map(r=>`<div class="pair"><div class="pl">${r.l}${r.d?`<em>${r.d}</em>`:''}</div>${r.b.map(b=>`<div class="hb"><span class="${b.c}" data-w="${b.v/(r.max||100)*100}">${b.t}</span></div>`).join('')}</div>`).join('')}</div>`;
+const person = f => `<svg viewBox="0 0 40 40"><circle cx="20" cy="12" r="7" fill="${f?'var(--blue)':'var(--line)'}"/><path d="M6 38c0-8 6.3-13 14-13s14 5 14 13z" fill="${f?'var(--blue)':'var(--line)'}"/></svg>`;
+
+const P = [
+ {id:'problem',g:'Background',t:'The problem',ic:'alert',tv:'1 in 3',tn:'extubated within 4 h before the pathway',
+  body:`<div><p>Before the pathway, one in three cardiac surgical patients was extubated within 4 hours of leaving the OR.</p><p>Timing depended on the team and the receiving ICU, and slow extubation held up beds.</p></div>
+  <div class="viz"><div class="people">${[1,0,0,1,0,0,1,0,0].map(person).join('')}</div><div class="vlab" style="text-align:center">33.5% of cases extubated within 4 h at baseline</div></div>`},
+ {id:'aim',g:'Background',t:'Aim',ic:'target',tv:'50% target',tn:'within 6 months, up from 33.5%',
+  body:`<div><p>Raise extubation within 4 hours of OR exit from <b>33.5%</b> to <b>50%</b> within 6 months of launch, with no increase in prolonged ventilation or reintubation.</p></div>
+  <div class="viz">${bars([{l:'Baseline',b:[{c:'pre',v:33.5,t:'33.5%'}]},{l:'Aim',b:[{c:'blu',v:50,t:'50%'}]},{l:'Achieved, July 2026',d:'aim met',b:[{c:'post',v:51.8,t:'51.8%'}]}])}</div>`},
+ {id:'setting',g:'Background',t:'Setting and team',ic:'team',tv:'100 beds',tn:'20 to 25 cardiac cases each weekday',
+  body:`<div><p>A 100-bed CVICU receiving 20 to 25 cardiac surgical patients each weekday.</p><p>Anesthesiology, cardiac surgery, ICU nursing and respiratory therapy built the pathway together using lean design. Live since March 2026.</p></div>
+  <div class="viz"><div style="display:flex;gap:26px;flex-wrap:wrap"><div><div class="vnum">100</div><div class="vlab">CVICU beds</div></div><div><div class="vnum">20–25</div><div class="vlab">cardiac surgical admissions per weekday</div></div></div><div class="chips"><span class="chip">Anesthesiology</span><span class="chip">Cardiac surgery</span><span class="chip">ICU nursing</span><span class="chip">Respiratory therapy</span></div></div>`},
+ {id:'cohort',g:'Background',t:'Cases analyzed',ic:'filter',tv:'10,316',tn:'bypass cases, Jan 2024 to Aug 2026',
+  body:`<div><p>11,247 main campus ICU admissions, January 2024 to August 2026.</p><p>931 cases without cardiopulmonary bypass were set aside (thoracic and general, vascular, device only, endovascular and transcatheter). That leaves 10,316 bypass cases.</p></div>
+  <div class="viz"><div class="funnel">
+   <div class="fr"><div class="fb" style="width:100%">11,247</div></div><div class="fl">Main campus ICU admissions</div>
+   <div class="fr"><div class="fb out" style="width:max(22%,110px)">−931</div><div class="fl">No cardiopulmonary bypass</div></div>
+   <div class="fr"><div class="fb" style="width:91.7%;background:var(--deep)">10,316</div></div><div class="fl">Bypass cases analyzed (8,429 baseline, 1,546 after launch)</div>
+  </div></div>`},
+ {id:'process',g:'Results',t:'Process measures',ic:'flask',tv:'+287%',tn:'methadone use, Feb to Apr 2026',
+  body:`<div><p>Methadone use rose 287% from February to April 2026 and reached about 750 syringes a month by midyear (pharmacy data).</p><p>Next measures in focus are neurologic exam within 90 minutes and sedation weaning started at handoff.</p></div>
+  <div class="viz"><div style="display:flex;gap:26px;flex-wrap:wrap"><div><div class="vnum" style="color:var(--post)">+287%</div><div class="vlab">methadone use, Feb to Apr 2026</div></div><div><div class="vnum">~750</div><div class="vlab">syringes a month by midyear</div></div></div><div class="chips"><span class="chip">Next: neuro exam ≤ 90 min</span><span class="chip">Next: weaning at handoff</span></div></div>`},
+ {id:'balancing',g:'Results',t:'Balancing measures',ic:'shield',tv:'8.1 → 7.3%',tn:'ventilation beyond 24 h',
+  body:`<div><p>Ventilation beyond 24 hours fell from 8.1% to 7.3%, and beyond 12 hours from 19.4% to 15.6%.</p><p>Reintubations are tracked closely to ensure the design maintains safety.</p></div>
+  <div class="viz">${bars([{l:'Ventilation > 12 h',d:'−3.8 pts',max:25,b:[{c:'pre',v:19.4,t:'19.4%'},{c:'post',v:15.6,t:'15.6%'}]},{l:'Ventilation > 24 h',d:'−0.8 pts',max:25,b:[{c:'pre',v:8.1,t:'8.1%'},{c:'post',v:7.3,t:'7.3%'}]}])}<div class="vlab"><span style="color:var(--trend)">■</span> Baseline &nbsp; <span style="color:var(--post)">■</span> After launch</div></div>`},
+ {id:'evening',g:'Next steps',t:'Next: cases finishing after 1700',ic:'moon',tv:'1 in 3',tn:'cases finish after 1700',
+  body:`<div><p>A third of our cases leave the OR between 1700 and 0659, when staffing is thinnest.</p><p>Extending the pathway to these cases, with the resources available on the evening shift, is the next improvement cycle.</p><p>Reasons for delayed extubation are not yet captured well enough to explain the difference, and that is the first thing to fix.</p></div>`},
+ {id:'conclusions',g:'Next steps',t:'Conclusions',ic:'check',tv:'+7 pts',tn:'above existing trend, no cost to safety',
+  body:`<div><p>One pathway from preoperative screen to ICU handoff raised early extubation about 7 percentage points above the existing trend, with no cost to safety.</p><p>Next: process measures, length of stay through stepdown, and extending the pathway to cases finishing after 1700.</p></div>
+  <div class="viz"><div class="vnum" style="color:var(--post)">+7.3<small>pts</small></div><div class="vlab">above the pre-launch trend</div><div class="chips"><span class="chip">Process measures</span><span class="chip">Evening staffing</span><span class="chip">LOS through stepdown</span></div></div>`}
+];
+const S = [
+ {id:'s1',n:1,t:'Preoperative',ic:'clip',k:'Enrolled unless excluded',body:'Every patient is enrolled unless exclusion criteria are present. At the preinduction huddle the surgeon and anesthesiologist confirm exclusions and plan a chest wall block, so the team is ready through any anesthesia handoff.',pts:['Every patient enrolled unless excluded','Preinduction huddle: surgeon and anesthesiologist confirm exclusions','Chest wall block planned ahead, so the team is ready through any handoff']},
+ {id:'s2',n:2,t:'Intraoperative',ic:'scalpel',k:'Anesthetic built for early extubation',body:'The anesthetic is planned around the extubation target. Chest wall block and intraoperative methadone for lasting pain control. Dexmedetomidine with propofol, continued at chest closure and weaned on ICU arrival.',pts:['Chest wall block','Intraoperative methadone for lasting pain control','Dexmedetomidine with propofol, continued at chest closure and weaned on ICU arrival']},
+ {id:'s3',n:3,t:'ICU arrival',ic:'bed',k:'Weaning plan at handoff',body:'The weaning plan is set at the bedside during handoff. Sedation is opioid-sparing, and nursing checkpoints include a neurologic exam within 90 minutes.',pts:['Weaning plan set at bedside handoff','Opioid-sparing sedation','Neurologic exam within 90 minutes']},
+ {id:'s4',n:4,t:'Extubation and stepdown',ic:'walk',k:'Out within 4 h, up within 3 h',body:'Extubation within 4 hours of leaving the OR. Out of bed within 3 hours of extubation once strength and vasopressor needs are checked. ICU discharge on POD 1, stepdown discharge by POD 2 to 3.',tl:[['≤ 4 h','Extubation after OR exit'],['≤ 3 h','Out of bed after extubation'],['POD 1','ICU discharge'],['POD 2–3','Stepdown discharge']]}
+];
+S.forEach(s=>{
+  s.g='The pathway · stage '+s.n+' of 4';
+  const viz = s.tl ? `<div class="tl">${s.tl.map(r=>`<div><b>${r[0]}</b><span>${r[1]}</span></div>`).join('')}</div>`
+    : `<div class="tl">${s.pts.map((p,i)=>`<div><b style="min-width:26px;color:var(--blue)">${ico('check').replace('<svg','<svg width="22" height="22"')}</b><span>${p}</span></div>`).join('')}</div>`;
+  s.body = `<div><p>${s.body}</p><div class="chips" style="margin-top:8px">${[1,2,3,4].map(n=>`<span class="chip" style="${n===s.n?'background:var(--blue);color:#fff;border-color:var(--blue)':''}">${n}. ${S[n-1].t}</span>`).join('')}</div></div><div class="viz">${viz}</div>`;
+});
+const EXTRA = {
+ outcome:{g:'Outcome measure',t:'Extubation within 4 hours of OR exit',ic:'chart',
+  body:`<div><p>Baseline 2,825 of 8,429 cases; after launch 718 of 1,546.</p><p>A 12.9 percentage point gain, 7.3 of it above the trend already underway, p &lt; 0.001.</p><p>The aim was met in July, month 5, at 51.8%; August was 46.1%.</p></div>
+  <div class="viz">${bars([{l:'Baseline, Jan 2024 to Feb 2026',b:[{c:'pre',v:33.5,t:'33.5%'}]},{l:'Aim',b:[{c:'blu',v:50,t:'50%'}]},{l:'After launch, Apr to Aug 2026',d:'+12.9 pts',b:[{c:'post',v:46.4,t:'46.4%'}]}])}<div class="vlab">2,825 / 8,429 → 718 / 1,546 cases</div></div>`},
+ methods:{g:'Methods',t:'Methods and statistics',ic:'doc',
+  body:`<div><p>Time is measured from OR exit to airway removal. March 2026, the launch month, is left out of both periods.</p><p>Chi-square for group comparisons; linear trend fitted to the 26 pre-launch months; segmented regression at launch, joint test p = 0.002.</p></div>
+  <div class="viz"><div class="tl"><div><b>26 mo</b><span>pre-launch trend window</span></div><div><b>1 mo</b><span>launch month excluded</span></div><div><b>5 mo</b><span>post-launch, Apr to Aug 2026</span></div><div><b>0.002</b><span>segmented regression joint test</span></div></div></div>`},
+ authors:{g:'ASA 2026 · Session QI02, Q118',t:'Authors and affiliations',ic:'users',
+  body:`<div class="authors">Nakul Kumar, MD<sup>1,2</sup> · Jean Deschamps, MD<sup>1</sup> · Anand Mehta, MB BS<sup>2</sup> · Mariya Guebe, MD<sup>1,2</sup> · Steven Insler, DO<sup>1</sup> · Shinya Unai, MD<sup>3</sup> · Marc Gillinov, MD<sup>3</sup> · Daelle Waldron-Gearhart, MSN<sup>4</sup> · Nikolaos Skubas, MD, DSc<sup>2</sup> · Hassan Khouli, MD<sup>1</sup> · Kamrouz Ghadimi, MD, MHSc<sup>1</sup></div>
+  <div class="viz"><div class="affil"><b>1</b><span>Surgical Critical Care, Critical Care Center</span><b>2</b><span>Cardiothoracic Anesthesiology</span><b>3</b><span>Cardiothoracic Surgery</span><b>4</b><span>CVICU Nursing</span></div><div class="vlab">Cleveland Clinic, Cleveland, OH, USA</div></div>`}
+};
+
+// Render tiles
+const tile = p => `<button class="tile" data-open="${p.id}"><span class="ic">${ico(p.ic)}</span><span style="min-width:0"><span class="tt">${p.t}</span><span class="tv" style="display:block">${p.tv}</span><span class="tn" style="display:block">${p.tn}</span></span><svg class="chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M9 6l6 6-6 6"/></svg></button>`;
+const railL=document.getElementById('railL'), railR=document.getElementById('railR');
+railL.innerHTML=P.slice(0,4).map(tile).join('');
+railR.innerHTML=P.slice(4).map(tile).join('');
+document.getElementById('steps').innerHTML=S.map(s=>`<button class="step" data-open="${s.id}"><span class="n">${s.n}</span><span style="min-width:0"><span class="s" style="display:block">${s.t}</span><span class="k" style="display:block">${s.k}</span></span></button>`).join('');
+
+// Dialog
+const ORDER=[...P.slice(0,4).map(p=>p.id),'outcome',...S.map(s=>s.id),...P.slice(4).map(p=>p.id),'methods','authors'];
+const ALL={}; P.forEach(p=>ALL[p.id]=p); S.forEach(s=>ALL[s.id]=s); Object.assign(ALL,EXTRA);
+const scrim=document.getElementById('scrim'), body=document.getElementById('dlgBody');
+let cur=null, lastFocus=null, idle;
+function open(id){
+  const d=ALL[id]; if(!d) return; cur=id;
+  if(!scrim.classList.contains('open')) lastFocus=document.activeElement;
+  document.getElementById('dlgIc').innerHTML=ico(d.ic);
+  document.getElementById('dlgGrp').textContent=d.g;
+  document.getElementById('dlgTitle').textContent=d.t;
+  body.innerHTML=d.body;
+  body.className='dlg-b'+(body.children.length<2?' one':'');
+  const i=ORDER.indexOf(id), pv=ALL[ORDER[(i-1+ORDER.length)%ORDER.length]], nx=ALL[ORDER[(i+1)%ORDER.length]];
+  document.getElementById('prev').textContent='← '+pv.t;
+  document.getElementById('next').textContent=nx.t+' →';
+  document.getElementById('dots').innerHTML=ORDER.map((o,j)=>`<i class="${j===i?'on':''}"></i>`).join('');
+  scrim.classList.add('open'); scrim.setAttribute('aria-hidden','false');
+  requestAnimationFrame(()=>requestAnimationFrame(()=>body.querySelectorAll('.hb span').forEach(s=>s.style.width=s.dataset.w+'%')));
+  document.getElementById('close').focus({preventScroll:true});
+  bumpIdle();
+}
+function close(){scrim.classList.remove('open');scrim.setAttribute('aria-hidden','true');cur=null;if(lastFocus)lastFocus.focus({preventScroll:true});}
+function step(dir){if(!cur)return;const i=ORDER.indexOf(cur);open(ORDER[(i+dir+ORDER.length)%ORDER.length]);}
+function bumpIdle(){clearTimeout(idle);idle=setTimeout(()=>{if(cur)close();},90000);} // kiosk: return to poster after 90 s idle
+document.addEventListener('click',e=>{const b=e.target.closest('[data-open]');if(b){open(b.dataset.open);}});
+document.getElementById('close').onclick=close;
+document.getElementById('prev').onclick=()=>step(-1);
+document.getElementById('next').onclick=()=>step(1);
+scrim.addEventListener('click',e=>{if(e.target===scrim)close();});
+scrim.addEventListener('pointerdown',bumpIdle);
+document.addEventListener('keydown',e=>{
+  if(!cur)return;
+  if(e.key==='Escape')close();
+  else if(e.key==='ArrowRight')step(1);
+  else if(e.key==='ArrowLeft')step(-1);
+  else if(e.key==='Tab'){const f=[...document.getElementById('dlg').querySelectorAll('button')];const a=f[0],z=f[f.length-1];if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus();}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus();}}
+});
+let sx=null;scrim.addEventListener('touchstart',e=>{sx=e.touches[0].clientX},{passive:true});
+scrim.addEventListener('touchend',e=>{if(sx==null)return;const dx=e.changedTouches[0].clientX-sx;if(Math.abs(dx)>60)step(dx<0?1:-1);sx=null;});
+
+// Chart
+const base=[29.9,29.7,31.1,33.3,28.8,34.8,20.6,31.5,28.5,33.4,32.7,32.8,37.9,35.2,35.4,36.9,36.2,39.5,29.5,35.8,32.4,41.2,32.7,36.4,39.8,33.8];
+const post=[47.9,41.6,45.4,51.8,46.1]; // Apr–Aug 2026 = idx 27–31
+const trend=[29.5,29.82,30.13,30.45,30.77,31.08,31.4,31.72,32.03,32.35,32.66,32.98,33.3,33.61,33.93,34.25,34.56,34.88,35.19,35.51,35.83,36.14,36.46,36.77,37.09,37.41,37.72,38.04,38.36,38.67,38.99,39.3];
+const MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const months=Array.from({length:32},(_,i)=>MN[i%12]+' '+(2024+Math.floor(i/12)));
+const val=i=>({b:i<26?base[i]:null,p:i>=27?post[i-27]:null,t:trend[i]});
+const SER=[
+ {k:'b',name:'Baseline',col:'var(--blue)',on:true},
+ {k:'p',name:'After launch',col:'var(--post)',on:true},
+ {k:'t',name:'Pre-launch trend',col:'var(--trend)',on:true},
+ {k:'a',name:'Aim 50%',col:'var(--aim)',on:true}
+];
+const lg=document.getElementById('legend');
+lg.innerHTML=SER.map((s,i)=>`<button class="lg" aria-pressed="true" data-s="${i}"><i style="background:${s.col}"></i>${s.name}</button>`).join('');
+lg.addEventListener('click',e=>{const b=e.target.closest('.lg');if(!b)return;const s=SER[b.dataset.s];s.on=!s.on;b.setAttribute('aria-pressed',s.on);draw();});
+const box=document.getElementById('chart'), tip=document.getElementById('tip');
+let W=1000,H=400;const m={l:58,r:112,t:24,b:34};
+const x=i=>m.l+i*(W-m.l-m.r)/31, y=v=>m.t+(55-v)/(55-15)*(H-m.t-m.b);
+function path(pts){return pts.map((p,j)=>(j?'L':'M')+x(p[0]).toFixed(1)+' '+y(p[1]).toFixed(1)).join(' ');}
+function draw(){
+  W=box.clientWidth;H=box.clientHeight;
+  const on=k=>SER.find(s=>s.k===k).on;
+  let g='';
+  for(let v=15;v<=55;v+=5){g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)" stroke-width="1"/><text x="${m.l-8}" y="${y(v)+4}" text-anchor="end" font-size="16" fill="var(--faint)" font-family="Arial">${v}%</text>`;}
+  // post-launch shading + launch gap
+  g+=`<rect x="${x(26.5)}" y="${m.t}" width="${x(31)-x(26.5)+10}" height="${H-m.t-m.b}" fill="var(--post-soft)" opacity=".7"/>`;
+  g+=`<rect x="${x(25.5)}" y="${m.t}" width="${x(26.5)-x(25.5)}" height="${H-m.t-m.b}" fill="var(--gap)"/>`;
+  g+=`<line x1="${x(26)}" x2="${x(26)}" y1="${m.t}" y2="${H-m.b}" stroke="var(--blue)" stroke-dasharray="3 4" stroke-width="1.5"/>`;
+  g+=`<text x="${x(26)-6}" y="${m.t+14}" text-anchor="end" font-size="16" font-weight="700" fill="var(--blue)" font-family="Arial">Launch, Mar 2026</text>`;
+  [0,6,12,18,24,30].forEach(i=>{g+=`<text x="${x(i)}" y="${H-m.b+24}" text-anchor="middle" font-size="16" fill="var(--faint)" font-family="Arial">${months[i]}</text><line x1="${x(i)}" x2="${x(i)}" y1="${H-m.b}" y2="${H-m.b+5}" stroke="var(--faint)"/>`;});
+  if(on('a')){g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${y(50)}" y2="${y(50)}" stroke="var(--aim)" stroke-width="2.2"/><text x="${W-m.r+8}" y="${y(50)+4}" font-size="17" font-weight="700" fill="var(--aim)" font-family="Arial">Aim 50%</text>`;}
+  if(on('t')){g+=`<path d="${path(trend.map((v,i)=>[i,v]))}" fill="none" stroke="var(--trend)" stroke-width="3" stroke-linecap="round"/><text x="${W-m.r+8}" y="${y(39.3)+4}" font-size="17" fill="var(--trend)" font-weight="700" font-family="Arial">Trend</text>`;}
+  if(on('b')){g+=`<path d="${path(base.map((v,i)=>[i,v]))}" fill="none" stroke="var(--blue)" stroke-width="3.4" stroke-linejoin="round"/>`;base.forEach((v,i)=>g+=`<circle cx="${x(i)}" cy="${y(v)}" r="4" fill="var(--surface)" stroke="var(--blue)" stroke-width="2"/>`);}
+  if(on('p')){g+=`<path d="${path(post.map((v,i)=>[i+27,v]))}" fill="none" stroke="var(--post)" stroke-width="4.6" stroke-linejoin="round"/>`;post.forEach((v,i)=>g+=`<circle cx="${x(i+27)}" cy="${y(v)}" r="${i===3?8:5.5}" fill="${i===3?'var(--post)':'var(--surface)'}" stroke="var(--post)" stroke-width="2.4"/>`);
+    g+=`<text x="${x(30)}" y="${y(51.8)-12}" text-anchor="middle" font-size="17" font-weight="700" fill="var(--post)" font-family="Arial">Jul 51.8%</text>`;
+    g+=`<text x="${W-m.r+8}" y="${y(46.1)+4}" font-size="17" fill="var(--post)" font-weight="700" font-family="Arial">Aug 46.1%</text>`;}
+  g+=`<line id="xh" x1="0" x2="0" y1="${m.t}" y2="${H-m.b}" stroke="var(--muted)" stroke-width="1" opacity="0"/>`;
+  g+=`<rect id="hit" x="${m.l}" y="${m.t}" width="${W-m.l-m.r}" height="${H-m.t-m.b}" fill="transparent"/>`;
+  const old=box.querySelector('svg'); if(old) old.remove();
+  box.insertAdjacentHTML('afterbegin',`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Monthly percentage of cardiac surgical patients extubated within 4 hours of OR exit, January 2024 to August 2026. Baseline hovered 29 to 41 percent; after the March 2026 launch it rose to 41.6 to 51.8 percent, above the 50 percent aim in July.">${g}</svg>`);
+  const svg=box.querySelector('svg');
+  const mv=e=>{const r=svg.getBoundingClientRect();const px=(e.clientX-r.left)/r.width*W;let i=Math.round((px-m.l)/((W-m.l-m.r)/31));i=Math.max(0,Math.min(31,i));
+    const xh=svg.querySelector('#xh');xh.setAttribute('x1',x(i));xh.setAttribute('x2',x(i));xh.setAttribute('opacity',1);
+    const v=val(i);const lines=[];
+    if(i===26)lines.push('Launch month, excluded');
+    if(v.b!=null)lines.push(`<b>${v.b}%</b> baseline`);
+    if(v.p!=null)lines.push(`<b>${v.p}%</b> post-launch`);
+    lines.push(`trend ${v.t.toFixed(1)}%`);
+    tip.innerHTML=`${months[i]}<br>${lines.join('<br>')}`;
+    const hi=Math.max(...[v.b,v.p,v.t].filter(n=>n!=null));
+    tip.style.left=Math.max(90,Math.min(W-90,x(i)))+'px';tip.style.top=(y(hi)-10)+'px';tip.style.opacity=1;};
+  svg.querySelector('#hit').addEventListener('pointermove',mv);
+  svg.querySelector('#hit').addEventListener('pointerdown',mv);
+  svg.querySelector('#hit').addEventListener('pointerleave',()=>{tip.style.opacity=0;svg.querySelector('#xh').setAttribute('opacity',0);});
+}
+draw();
+
+// Fit the 1920x1080 slide to any screen
+const slide=document.getElementById('slide');
+function fit(){const s=Math.min(innerWidth/1920,innerHeight/1080);slide.style.setProperty('--s',s);}
+addEventListener('resize',fit);fit();
+document.getElementById('fs').addEventListener('click',()=>{
+  try{const d=document;if(d.fullscreenElement){d.exitFullscreen();}else{const p=d.documentElement.requestFullscreen&&d.documentElement.requestFullscreen();if(p&&p.catch)p.catch(()=>{});}}catch(e){}
+});
+})();
+</script>
+</body></html>
